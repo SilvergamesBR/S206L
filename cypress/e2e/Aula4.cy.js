@@ -1,10 +1,10 @@
 /// <reference = cypress>
 describe("Testes de criacao, registro, login e delete", ()=>{
-    it.skip("Teste criacao de usuario com sucesso", ()=>{
+    it("Teste criacao de usuario com sucesso", ()=>{
         CriarUser()
     })
 
-    it.skip("Teste criacao de usuario com falha", ()=>{
+    it("Teste criacao de usuario com falha", ()=>{
         let hora = new Date().getHours().toString()
         let minuto = new Date().getMinutes().toString()
         let segundo = new Date().getSeconds().toString()
@@ -23,7 +23,7 @@ describe("Testes de criacao, registro, login e delete", ()=>{
         cy.get('#error').should("have.text","User validation failed: password: Path `password` is required.")
     })
 
-    it.skip("Teste de adicionar contato com sucesso", ()=>{
+    it("Teste de adicionar contato com sucesso", ()=>{
         let infos = CriarUser()
 
         cy.get('#add-contact').click()
@@ -43,7 +43,7 @@ describe("Testes de criacao, registro, login e delete", ()=>{
         cy.get('.contactTableBodyRow > :nth-child(4)').should("have.text",infos[2])
     })
 
-    it.skip("Teste de adicionar contato com falha", ()=>{
+    it("Teste de adicionar contato com falha", ()=>{
         let infos = CriarUser()
 
         cy.get('#add-contact').click()
@@ -60,7 +60,7 @@ describe("Testes de criacao, registro, login e delete", ()=>{
         cy.get('#country').type("Brazil")
         cy.get('#submit').click()
 
-        cy.get('#error').shoulc("have.text","Contact validation failed: postalCode: Postal code is invalid")
+        cy.get('#error').should("have.text","Contact validation failed: postalCode: Postal code is invalid")
     })
 
     it("Teste de login com sucesso", ()=>{
@@ -71,6 +71,16 @@ describe("Testes de criacao, registro, login e delete", ()=>{
         cy.get('#password').type(infos[1])
         cy.get('#submit').click()
         cy.get('h1').should("have.text","Contact List")
+    })
+
+    it("Teste de login com falha", ()=>{
+        let infos = CriarUser()
+        
+        cy.get('#logout').click()
+        cy.get('#email').type(infos[2])
+        cy.get('#password').type(infos[1]+"erro")
+        cy.get('#submit').click()
+        cy.get('#error').should("have.text","Incorrect username or password")
     })
 
 })
